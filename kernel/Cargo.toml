@@ -10,3 +10,4 @@ bench = false
 
 [dependencies]
 bootloader_api = "0.11"
+noto-sans-mono-bitmap = { version = "0.3", features = ["size_20"] }
