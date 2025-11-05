@@ -1,9 +1,22 @@
 use bootloader_api::info::{FrameBuffer, FrameBufferInfo, PixelFormat};
+use core::mem::MaybeUninit;
 use core::{fmt, ptr};
 use font_constants::BACKUP_CHAR;
 use noto_sans_mono_bitmap::{
     FontWeight, RasterHeight, RasterizedChar, get_raster, get_raster_width,
 };
+use once_cell_no_std::OnceCell;
+use spin::Mutex;
+
+pub static WRITER: OnceCell<Mutex<FrameBufferWriter>> = OnceCell::new();
+
+/// Initializes global writer instance
+pub fn init_framebuffer_writer(info: &'static mut FrameBuffer) {
+    WRITER
+        .set(Mutex::new(FrameBufferWriter::new(info)))
+        .expect("framebuffer already initialized")
+        .expect("concurrent access");
+}
 
 /// Additional vertical space between lines
 const LINE_SPACING: usize = 2;
@@ -44,6 +57,7 @@ fn get_char_raster(c: char) -> RasterizedChar {
 }
 
 /// Allows logging text to a pixel-based framebuffer.
+#[derive(Debug)]
 pub struct FrameBufferWriter {
     framebuffer: &'static mut [u8],
     info: FrameBufferInfo,
@@ -151,4 +165,26 @@ impl fmt::Write for FrameBufferWriter {
         }
         Ok(())
     }
+}
+
+#[macro_export]
+macro_rules! print {
+    ($($arg:tt)*) => ($crate::framebuffer::_print(format_args!($($arg)*)));
+}
+
+#[macro_export]
+macro_rules! println {
+    () => ($crate::print!("\n"));
+    ($($arg:tt)*) => ($crate::print!("{}\n", format_args!($($arg)*)));
+}
+
+#[doc(hidden)]
+pub fn _print(args: fmt::Arguments) {
+    use core::fmt::Write;
+    WRITER
+        .get()
+        .expect("framebuffer not initialized")
+        .lock()
+        .write_fmt(args)
+        .unwrap();
 }
