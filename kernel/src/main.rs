@@ -5,6 +5,7 @@ mod io;
 
 use crate::io::framebuffer;
 use core::panic::PanicInfo;
+use crate::io::framebuffer::WRITER;
 
 bootloader_api::entry_point!(kernel_start);
 fn kernel_start(boot_info: &'static mut bootloader_api::BootInfo) -> ! {
@@ -12,10 +13,15 @@ fn kernel_start(boot_info: &'static mut bootloader_api::BootInfo) -> ! {
 
     println!("hello, world!");
 
+    panic!("test");
+
     loop {}
 }
 
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
+    WRITER.get().unwrap().lock().clear();
+    println!("{info}");
+
     loop {}
 }
