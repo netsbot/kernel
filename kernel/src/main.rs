@@ -1,26 +1,21 @@
 #![no_std]
 #![no_main]
 
-mod io;
-
-use crate::io::framebuffer;
 use core::panic::PanicInfo;
-use crate::io::framebuffer::WRITER;
+use kernel::{gdt, interrupts, io::framebuffer, println};
 
 bootloader_api::entry_point!(kernel_start);
 fn kernel_start(boot_info: &'static mut bootloader_api::BootInfo) -> ! {
     framebuffer::init_framebuffer_writer(boot_info.framebuffer.as_mut().unwrap());
-
-    println!("hello, world!");
-
-    panic!("test");
+    interrupts::init_idt();
+    gdt::init_gdt();
 
     loop {}
 }
 
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
-    WRITER.get().unwrap().lock().clear();
+    framebuffer::WRITER.get().unwrap().lock().clear();
     println!("{info}");
 
     loop {}

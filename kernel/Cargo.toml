@@ -5,11 +5,13 @@ edition = "2024"
 
 [[bin]]
 name = "kernel"
-test = false
 bench = false
+test = false
 
 [dependencies]
+x86_64 = "0.15"
 bootloader_api = "0.11"
 noto-sans-mono-bitmap = { version = "0.3", features = ["size_20", "unicode-specials"] }
 spin = "0.10.0"
 once_cell_no_std = "0.1.1"
+

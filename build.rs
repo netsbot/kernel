@@ -13,7 +13,7 @@ fn main() {
     let bios_path = out_dir.join("bios.img");
     bootloader::BiosBoot::new(&kernel)
         .create_disk_image(&bios_path)
-        .unwrap();
+        .unwrap();  
 
     // pass the disk image paths as env variables to the `main.rs`
     println!("cargo:rustc-env=BIOS_PATH={}", bios_path.display());
