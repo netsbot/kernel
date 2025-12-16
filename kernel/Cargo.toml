@@ -14,4 +14,4 @@ bootloader_api = "0.11"
 noto-sans-mono-bitmap = { version = "0.3", features = ["size_20", "unicode-specials"] }
 spin = "0.10.0"
 once_cell_no_std = "0.1.1"
-
+acpi = "6.0.1"
