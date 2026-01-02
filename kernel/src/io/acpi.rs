@@ -1,5 +1,5 @@
-use acpi::aml::AmlError;
-use acpi::{AcpiError, Handle, Handler, PciAddress, PhysicalMapping};
+use acpi::{Handler, PciAddress, PhysicalMapping};
+use core::ptr;
 use core::ptr::NonNull;
 use x86_64::{PhysAddr, VirtAddr};
 
@@ -9,13 +9,19 @@ pub struct AcpiHandler {
 }
 
 impl AcpiHandler {
+    pub fn new(physical_memory_offset: VirtAddr) -> Self {
+        Self {
+            physical_memory_offset,
+        }
+    }
+
     fn read_addr<T>(&self, addr: usize) -> T
     where
         T: Copy,
     {
         let phys_addr = PhysAddr::new(addr as u64);
         let virt_addr = self.physical_memory_offset + phys_addr.as_u64();
-        unsafe { *virt_addr.as_ptr::<T>() }
+        unsafe { ptr::read_volatile(virt_addr.as_ptr::<T>()) }
     }
 }
 
@@ -129,18 +135,6 @@ impl Handler for AcpiHandler {
     }
 
     fn sleep(&self, milliseconds: u64) {
-        unimplemented!()
-    }
-
-    fn create_mutex(&self) -> Handle {
-        unimplemented!()
-    }
-
-    fn acquire(&self, mutex: Handle, timeout: u16) -> Result<(), AmlError> {
-        unimplemented!()
-    }
-
-    fn release(&self, mutex: Handle) {
         unimplemented!()
     }
 }

@@ -1,4 +1,4 @@
-use once_cell_no_std::OnceCell;
+use spin::Once;
 use x86_64::VirtAddr;
 use x86_64::instructions::{
     segmentation::{CS, Segment},
@@ -11,8 +11,8 @@ use x86_64::structures::{
 
 pub const DOUBLE_FAULT_IST_INDEX: u16 = 0;
 
-pub static TSS: OnceCell<TaskStateSegment> = OnceCell::new();
-pub static GDT: OnceCell<GlobalDescriptorTable> = OnceCell::new();
+pub static TSS: Once<TaskStateSegment> = Once::new();
+pub static GDT: Once<GlobalDescriptorTable> = Once::new();
 
 fn init_tss() {
     let mut tss = TaskStateSegment::new();
@@ -24,9 +24,7 @@ fn init_tss() {
         stack_start + STACK_SIZE as u64 // stack end
     };
 
-    TSS.set(tss)
-        .expect("tss already initialized")
-        .expect("concurrent access");
+    TSS.call_once(|| tss);
 }
 
 pub fn init_gdt() {
@@ -38,10 +36,7 @@ pub fn init_gdt() {
         TSS.get().expect("tss not initialized"),
     ));
 
-    GDT.set(gdt)
-        .expect("gdt already initialized")
-        .expect("concurrent access");
-
+    GDT.call_once(|| gdt);
     GDT.get().unwrap().load();
 
     unsafe {

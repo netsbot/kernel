@@ -10,8 +10,11 @@ panic = "abort"
 panic = "abort"
 
 [build-dependencies]
-bootloader = "0.11"
+bootloader = "0.11.13"
 kernel = { path = "kernel", artifact = "bin", target = "x86_64-unknown-none" }
 
 [workspace]
 members = ["kernel"]
+
+[target.x86_64-unknown-none]
+rustflags = ["-g"]

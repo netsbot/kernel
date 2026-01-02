@@ -1,8 +1,8 @@
-use crate::{gdt, println};
-use once_cell_no_std::OnceCell;
-use x86_64::structures::idt::{InterruptDescriptorTable, InterruptStackFrame};
+use crate::{gdt, hlt_loop, println};
+use spin::Once;
+use x86_64::structures::idt::{InterruptDescriptorTable, InterruptStackFrame, PageFaultErrorCode};
 
-pub static IDT: OnceCell<InterruptDescriptorTable> = OnceCell::new();
+pub static IDT: Once<InterruptDescriptorTable> = Once::new();
 
 pub const PIC1_OFFSET: u8 = 32;
 pub const PIC2_OFFSET: u8 = PIC1_OFFSET + 8;
@@ -26,6 +26,7 @@ impl InterruptIndex {
 pub fn init_idt() {
     let mut idt = InterruptDescriptorTable::new();
     idt.breakpoint.set_handler_fn(breakpoint_handler);
+    idt.page_fault.set_handler_fn(page_fault_handler);
     idt[InterruptIndex::Timer.as_u8()].set_handler_fn(timer_int_handler);
     unsafe {
         idt.double_fault
@@ -33,9 +34,7 @@ pub fn init_idt() {
             .set_stack_index(gdt::DOUBLE_FAULT_IST_INDEX);
     }
 
-    IDT.set(idt)
-        .expect("idt already initialized")
-        .expect("concurrent access");
+    IDT.call_once(|| idt);
 
     IDT.get().unwrap().load();
 }
@@ -48,9 +47,21 @@ extern "x86-interrupt" fn double_fault_handler(
     stack_frame: InterruptStackFrame,
     _err_code: u64,
 ) -> ! {
-    println!("EXCEPTION: DOUBLE FAULT\n{stack_frame:#?}");
+    panic!("EXCEPTION: DOUBLE FAULT\n{stack_frame:#?}");
+}
 
-    loop {}
+extern "x86-interrupt" fn page_fault_handler(
+    stack_frame: InterruptStackFrame,
+    err_code: PageFaultErrorCode,
+) {
+    use x86_64::registers::control::Cr2;
+
+    println!("EXCEPTION: PAGE FAULT");
+    println!("Accessed Address: {:?}", Cr2::read());
+    println!("Error Code: {:?}", err_code);
+    println!("{:#?}", stack_frame);
+
+    hlt_loop();
 }
 
 extern "x86-interrupt" fn timer_int_handler(_stack_frame: InterruptStackFrame) {
