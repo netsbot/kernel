@@ -36,7 +36,7 @@ impl KernelFrameAllocator {
         let bitmap_start_addr = bitmap_memory_region.start;
 
         let bitmap_slice = unsafe {
-            core::slice::from_raw_parts_mut(bitmap_start_addr as *mut u64, bitmap_size as usize)
+            core::slice::from_raw_parts_mut(super::phys_to_virt(PhysAddr::new(bitmap_start_addr)).as_mut_ptr(), bitmap_size as usize)
         };
 
         // start from safe state (everything is used)
