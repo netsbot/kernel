@@ -16,5 +16,3 @@ kernel = { path = "kernel", artifact = "bin", target = "x86_64-unknown-none" }
 [workspace]
 members = ["kernel"]
 
-[target.x86_64-unknown-none]
-rustflags = ["-g"]
