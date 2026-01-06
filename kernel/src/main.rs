@@ -1,5 +1,6 @@
 #![no_std]
 #![no_main]
+extern crate alloc;
 
 use core::panic::PanicInfo;
 use kernel::{
@@ -13,12 +14,11 @@ bootloader_api::entry_point!(kernel_start, config = &kernel::BOOTLOADER_CONFIG);
 fn kernel_start(boot_info: &'static mut bootloader_api::BootInfo) -> ! {
     framebuffer::init_framebuffer_writer(boot_info.framebuffer.as_mut().unwrap());
     serial_monitor::init_serial_monitor_writer(kernel::SERIAL_MONITOR_PORT);
-    mem::init();
+    // mem::init(&boot_info.memory_regions);
     gdt::init_gdt();
     interrupts::init_idt();
-    unsafe {
-        mem::frame_allocator::init_frame_allocator(&boot_info.memory_regions);
-    }
+
+    println!("okay!");
 
     hlt_loop()
 }

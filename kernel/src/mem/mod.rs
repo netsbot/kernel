@@ -1,6 +1,9 @@
 pub mod frame_allocator;
+pub mod heap;
 
 use crate::PHYSICAL_MEMORY_OFFSET;
+use bootloader_api::info::MemoryRegions;
+use core::ops::DerefMut;
 use spin::{Mutex, Once};
 use x86_64::registers::control::Cr3;
 use x86_64::structures::paging::{OffsetPageTable, PageTable, Translate};
@@ -10,7 +13,7 @@ pub use frame_allocator::FRAME_ALLOCATOR;
 
 pub static MAPPER: Once<Mutex<OffsetPageTable>> = Once::new();
 
-pub fn init() {
+pub fn init(memory_map: &'static MemoryRegions) {
     unsafe {
         let level_4_table = active_level_4_table();
         MAPPER.call_once(|| {
@@ -19,6 +22,14 @@ pub fn init() {
                 VirtAddr::new(PHYSICAL_MEMORY_OFFSET),
             ))
         });
+
+        frame_allocator::init_frame_allocator(memory_map);
+
+        heap::init_heap(
+            MAPPER.get_unchecked().lock().deref_mut(),
+            FRAME_ALLOCATOR.get_unchecked().lock().deref_mut(),
+        )
+        .expect("heap initialization failed");
     }
 }
 

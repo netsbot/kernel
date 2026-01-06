@@ -212,6 +212,7 @@ dependencies = [
  "bootloader_api",
  "noto-sans-mono-bitmap",
  "spin",
+ "talc",
  "x86_64",
 ]
 
@@ -437,6 +438,15 @@ dependencies = [
  "proc-macro2",
  "quote",
  "unicode-ident",
+]
+
+[[package]]
+name = "talc"
+version = "4.4.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a3ae828aa394de34c7de08f522d1b86bd1c182c668d27da69caadda00590f26d"
+dependencies = [
+ "lock_api",
 ]
 
 [[package]]

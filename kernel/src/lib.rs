@@ -2,6 +2,8 @@
 #![no_main]
 #![feature(abi_x86_interrupt)]
 
+extern crate alloc;
+
 use bootloader_api::BootloaderConfig;
 use bootloader_api::config::Mapping;
 

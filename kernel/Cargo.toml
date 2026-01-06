@@ -14,4 +14,5 @@ bootloader_api = "0.11.13"
 noto-sans-mono-bitmap = { version = "0.3", features = ["size_20", "unicode-specials"] }
 spin = "0.10.0"
 acpi = {version = "6.0.1", default-features = false}
+talc = "4.4.3"
 

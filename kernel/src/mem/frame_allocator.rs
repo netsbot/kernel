@@ -36,7 +36,7 @@ impl KernelFrameAllocator {
         let bitmap_start_addr = bitmap_memory_region.start;
 
         let bitmap_slice = unsafe {
-            core::slice::from_raw_parts_mut(super::phys_to_virt(PhysAddr::new(bitmap_start_addr)).as_mut_ptr(), bitmap_size as usize)
+            core::slice::from_raw_parts_mut(super::phys_to_virt(PhysAddr::new(bitmap_start_addr)).as_mut_ptr(), bitmap_size as usize / 8 )
         };
 
         // start from safe state (everything is used)
@@ -79,10 +79,10 @@ unsafe impl FrameAllocator<Size4KiB> for KernelFrameAllocator {
     fn allocate_frame(&mut self) -> Option<PhysFrame<Size4KiB>> {
         for frame_idx in self.next_free_frame..self.max_frames {
             let byte_idx = frame_idx / 64;
-            let bit_idx = byte_idx % 64;
+            let bit_idx = frame_idx % 64;
 
             if (self.bitmap[byte_idx as usize] & (1 << bit_idx)) == 0 {
-                self.bitmap[byte_idx as usize] |= (1 << bit_idx);
+                self.bitmap[byte_idx as usize] |= 1 << bit_idx;
                 self.next_free_frame += 1;
 
                 let addr = frame_idx * 4096;
@@ -98,7 +98,7 @@ impl FrameDeallocator<Size4KiB> for KernelFrameAllocator {
     unsafe fn deallocate_frame(&mut self, frame: PhysFrame<Size4KiB>) {
         let frame_idx = frame.start_address().as_u64() / 4096;
         let byte_idx = frame_idx / 64;
-        let bit_idx = byte_idx % 64;
+        let bit_idx = frame_idx % 64;
 
         self.bitmap[byte_idx as usize] &= !(1 << bit_idx);
 
