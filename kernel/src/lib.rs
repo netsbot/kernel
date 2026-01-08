@@ -4,11 +4,10 @@
 
 extern crate alloc;
 
-use bootloader_api::BootloaderConfig;
-use bootloader_api::config::Mapping;
+use bootloader_api::{BootloaderConfig, config::Mapping};
 
 pub mod gdt;
-pub mod interrupts;
+pub mod idt;
 pub mod io;
 pub mod mem;
 

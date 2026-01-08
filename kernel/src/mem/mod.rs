@@ -1,15 +1,18 @@
 pub mod frame_allocator;
 pub mod heap;
 
-use crate::PHYSICAL_MEMORY_OFFSET;
-use bootloader_api::info::MemoryRegions;
 use core::ops::DerefMut;
-use spin::{Mutex, Once};
-use x86_64::registers::control::Cr3;
-use x86_64::structures::paging::{OffsetPageTable, PageTable, Translate};
-use x86_64::{PhysAddr, VirtAddr};
 
+use bootloader_api::info::MemoryRegions;
 pub use frame_allocator::FRAME_ALLOCATOR;
+use spin::{Mutex, Once};
+use x86_64::{
+    PhysAddr, VirtAddr,
+    registers::control::Cr3,
+    structures::paging::{OffsetPageTable, PageTable, Translate},
+};
+
+use crate::PHYSICAL_MEMORY_OFFSET;
 
 pub static MAPPER: Once<Mutex<OffsetPageTable>> = Once::new();
 
@@ -50,9 +53,13 @@ pub fn phys_to_virt(addr: PhysAddr) -> VirtAddr {
 }
 
 pub fn virt_to_phys(addr: VirtAddr) -> Option<PhysAddr> {
-    MAPPER
-        .get()
-        .expect("mapper not initialized")
-        .lock()
-        .translate_addr(addr)
+    use x86_64::instructions::interrupts;
+
+    interrupts::without_interrupts(|| {
+        MAPPER
+            .get()
+            .expect("mapper not initialized")
+            .lock()
+            .translate_addr(addr)
+    })
 }

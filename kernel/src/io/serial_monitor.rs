@@ -1,10 +1,11 @@
 use core::fmt;
+
 use spin::{Mutex, Once};
 use x86_64::instructions::port::Port;
 
 pub static WRITER: Once<Mutex<SerialMonitorWriter>> = Once::new();
 
-pub fn init_serial_monitor_writer(port: u16) {
+pub fn init(port: u16) {
     WRITER.call_once(|| Mutex::new(SerialMonitorWriter::new(port)));
 }
 

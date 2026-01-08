@@ -1,5 +1,6 @@
-use bootloader_api::info::{FrameBuffer, FrameBufferInfo, PixelFormat};
 use core::{fmt, ptr};
+
+use bootloader_api::info::{FrameBuffer, FrameBufferInfo, PixelFormat};
 use font_constants::BACKUP_CHAR;
 use noto_sans_mono_bitmap::{
     FontWeight, RasterHeight, RasterizedChar, get_raster, get_raster_width,
@@ -9,7 +10,7 @@ use spin::{Mutex, Once};
 pub static WRITER: Once<Mutex<FrameBufferWriter>> = Once::new();
 
 /// Initializes global writer instance
-pub fn init_framebuffer_writer(info: &'static mut FrameBuffer) {
+pub fn init(info: &'static mut FrameBuffer) {
     WRITER.call_once(|| Mutex::new(FrameBufferWriter::new(info)));
 }
 

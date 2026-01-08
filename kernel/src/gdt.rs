@@ -1,12 +1,14 @@
 use spin::Once;
-use x86_64::VirtAddr;
-use x86_64::instructions::{
-    segmentation::{CS, Segment},
-    tables::load_tss,
-};
-use x86_64::structures::{
-    gdt::{Descriptor, GlobalDescriptorTable},
-    tss::TaskStateSegment,
+use x86_64::{
+    VirtAddr,
+    instructions::{
+        segmentation::{CS, Segment},
+        tables::load_tss,
+    },
+    structures::{
+        gdt::{Descriptor, GlobalDescriptorTable},
+        tss::TaskStateSegment,
+    },
 };
 
 pub const DOUBLE_FAULT_IST_INDEX: u16 = 0;
@@ -27,11 +29,12 @@ fn init_tss() {
     TSS.call_once(|| tss);
 }
 
-pub fn init_gdt() {
+pub fn init() {
     init_tss();
 
     let mut gdt = GlobalDescriptorTable::new();
     let code_selector = gdt.append(Descriptor::kernel_code_segment());
+    let _data_selector = gdt.append(Descriptor::kernel_data_segment());
     let tss_selector = gdt.append(Descriptor::tss_segment(
         TSS.get().expect("tss not initialized"),
     ));

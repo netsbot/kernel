@@ -1,8 +1,9 @@
-use bootloader_api::info::MemoryRegionKind::Usable;
-use bootloader_api::info::MemoryRegions;
+use bootloader_api::info::{MemoryRegionKind::Usable, MemoryRegions};
 use spin::{Mutex, Once};
-use x86_64::PhysAddr;
-use x86_64::structures::paging::{FrameAllocator, FrameDeallocator, PhysFrame, Size4KiB};
+use x86_64::{
+    PhysAddr,
+    structures::paging::{FrameAllocator, FrameDeallocator, PhysFrame, Size4KiB},
+};
 
 pub static FRAME_ALLOCATOR: Once<Mutex<KernelFrameAllocator>> = Once::new();
 
@@ -36,7 +37,10 @@ impl KernelFrameAllocator {
         let bitmap_start_addr = bitmap_memory_region.start;
 
         let bitmap_slice = unsafe {
-            core::slice::from_raw_parts_mut(super::phys_to_virt(PhysAddr::new(bitmap_start_addr)).as_mut_ptr(), bitmap_size as usize / 8 )
+            core::slice::from_raw_parts_mut(
+                super::phys_to_virt(PhysAddr::new(bitmap_start_addr)).as_mut_ptr(),
+                bitmap_size as usize / 8,
+            )
         };
 
         // start from safe state (everything is used)

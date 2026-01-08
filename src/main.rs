@@ -23,6 +23,7 @@ gdb-remote localhost:1234
         .arg("mon:stdio");
 
     // cmd.arg("-s").arg("-S");
+    cmd.arg("-d").arg("int").arg("-D").arg("qemu.log");
 
     let mut child = cmd.spawn().unwrap();
     child.wait().unwrap();
