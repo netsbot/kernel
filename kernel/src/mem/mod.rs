@@ -7,12 +7,10 @@ use bootloader_api::info::MemoryRegions;
 pub use frame_allocator::FRAME_ALLOCATOR;
 use spin::{Mutex, Once};
 use x86_64::{
-    PhysAddr, VirtAddr,
-    registers::control::Cr3,
-    structures::paging::{OffsetPageTable, PageTable, Translate},
+    registers::control::Cr3, structures::paging::{OffsetPageTable, PageTable, Translate},
+    PhysAddr,
+    VirtAddr,
 };
-
-use crate::PHYSICAL_MEMORY_OFFSET;
 
 pub static MAPPER: Once<Mutex<OffsetPageTable>> = Once::new();
 
@@ -63,3 +61,5 @@ pub fn virt_to_phys(addr: VirtAddr) -> Option<PhysAddr> {
             .translate_addr(addr)
     })
 }
+
+pub const PHYSICAL_MEMORY_OFFSET: u64 = 0xFFFF_8000_0000_0000;

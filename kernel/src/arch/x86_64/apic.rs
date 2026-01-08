@@ -6,7 +6,7 @@ use x2apic::{
 };
 use x86_64::{PhysAddr, VirtAddr, instructions::port::Port};
 
-use crate::{idt::InterruptIndex, mem::phys_to_virt, println};
+use crate::{arch::idt::InterruptIndex, mem::phys_to_virt};
 
 static LAPIC_BASE_ADDR: Once<u64> = Once::new();
 

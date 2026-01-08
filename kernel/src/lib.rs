@@ -4,14 +4,14 @@
 
 extern crate alloc;
 
-use bootloader_api::{BootloaderConfig, config::Mapping};
+use bootloader_api::{config::Mapping, BootloaderConfig};
+use mem::PHYSICAL_MEMORY_OFFSET;
 
-pub mod gdt;
-pub mod idt;
-pub mod io;
+pub mod arch;
+pub mod drivers;
 pub mod mem;
+pub mod tasks;
 
-pub const PHYSICAL_MEMORY_OFFSET: u64 = 0xFFFF_8000_0000_0000;
 pub const SERIAL_MONITOR_PORT: u16 = 0x3F8;
 
 pub const BOOTLOADER_CONFIG: BootloaderConfig = {

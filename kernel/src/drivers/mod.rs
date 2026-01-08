@@ -1,14 +1,26 @@
 use core::fmt;
+use bootloader_api::info::{FrameBuffer, Optional};
+use crate::SERIAL_MONITOR_PORT;
+use crate::drivers::keyboard::print_keypresses;
+use crate::tasks::executor::{Task, ASYNC_EXECUTOR};
 
-pub mod acpi;
-pub mod apic;
-pub mod framebuffer;
-pub mod serial_monitor;
-pub mod keyboard;
+mod framebuffer;
+mod serial_monitor;
+pub(crate) mod keyboard;
+
+pub fn init_stdout(framebuffer: &'static mut Optional<FrameBuffer>) {
+    framebuffer::init(framebuffer.as_mut().unwrap());
+    serial_monitor::init(SERIAL_MONITOR_PORT);
+}
+
+pub fn init() {
+    let mut executor = unsafe { ASYNC_EXECUTOR.get_unchecked() }.lock();
+    executor.spawn(Task::new(print_keypresses()));
+}
 
 #[macro_export]
 macro_rules! print {
-    ($($arg:tt)*) => ($crate::io::_print(format_args!($($arg)*)));
+    ($($arg:tt)*) => ($crate::drivers::_print(format_args!($($arg)*)));
 }
 
 #[macro_export]

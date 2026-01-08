@@ -4,7 +4,8 @@ use x86_64::{
     structures::idt::{InterruptDescriptorTable, InterruptStackFrame, PageFaultErrorCode},
 };
 
-use crate::{gdt, hlt_loop, io, io::apic, println};
+use crate::{arch::gdt, hlt_loop, drivers, println};
+use crate::arch::x86_64::apic;
 
 pub static IDT: Once<InterruptDescriptorTable> = Once::new();
 
@@ -104,7 +105,7 @@ extern "x86-interrupt" fn keyboard_int_handler(_stack_frame: InterruptStackFrame
     let mut port = Port::new(0x60);
     let scancode: u8 = unsafe { port.read() };
 
-    io::keyboard::add_scancode(scancode);
+    drivers::keyboard::add_scancode(scancode);
 
     unsafe {
         apic::lapic_end_of_interrupt();

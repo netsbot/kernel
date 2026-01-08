@@ -2,14 +2,13 @@ use core::{
     pin::Pin,
     task::{Context, Poll},
 };
-use core::fmt::Debug;
-use acpi::aml::object::Object::Event;
+
 use crossbeam_queue::ArrayQueue;
 use futures_util::{Stream, StreamExt, task::AtomicWaker};
-use pc_keyboard::{KeyEvent, ScancodeSet};
+use pc_keyboard::ScancodeSet;
 use spin::Once;
 
-use crate::{print, println, warning};
+use crate::{print, warning};
 
 const SCANCODE_QUEUE_LEN: usize = 128;
 
@@ -17,14 +16,10 @@ static WAKER: AtomicWaker = AtomicWaker::new();
 static SCANCODE_QUEUE: Once<ArrayQueue<u8>> = Once::new();
 
 pub(crate) fn add_scancode(scancode: u8) {
-    if let Some(queue) = SCANCODE_QUEUE.get() {
-        if queue.push(scancode).is_err() {
-            warning!("scancode queue is full, dropping keyboard input")
-        } else {
-            WAKER.wake()
-        }
-    } else {
-        warning!("scancode queue uninitialized")
+    if let Some(queue) = SCANCODE_QUEUE.get()
+        && queue.push(scancode).is_ok()
+    {
+        WAKER.wake()
     }
 }
 
