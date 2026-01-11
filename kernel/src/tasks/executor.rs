@@ -56,7 +56,6 @@ impl ArcWake for TaskWaker {
 pub struct TaskExecutor {
     tasks: BTreeMap<u8, Task>,
     task_queue: Arc<ArrayQueue<u8>>,
-    new_task: ArrayQueue<Task>,
     waker_cache: BTreeMap<u8, Waker>,
 }
 
@@ -65,11 +64,12 @@ impl TaskExecutor {
         Self {
             tasks: BTreeMap::new(),
             task_queue: Arc::new(ArrayQueue::new(MAX_TASKS)),
-            new_task: ArrayQueue::new(1),
             waker_cache: BTreeMap::new(),
         }
     }
 
+
+    // TODO: Make spawning not require mut self
     pub fn spawn(&mut self, task: Task) {
         static NEXT_TASK_ID: AtomicU8 = AtomicU8::new(0);
 

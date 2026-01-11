@@ -11,6 +11,7 @@ use x86_64::{
     PhysAddr,
     VirtAddr,
 };
+use crate::println;
 
 pub static MAPPER: Once<Mutex<OffsetPageTable>> = Once::new();
 
