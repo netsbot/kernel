@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="CargoProjects">
+    <cargoProject FILE="$PROJECT_DIR$/kernel/Cargo.toml">
+      <package file="$PROJECT_DIR$/kernel">
+        <feature name="default" enabled="true" />
+      </package>
+    </cargoProject>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="735d4890-2f57-4464-961d-63b0145c7518" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/GNUmakefile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kernel/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kernel/GNUmakefile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kernel/build.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kernel/linker-x86_64.ld" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kernel/src/common/color.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kernel/src/common/mod.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/limine.conf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.cargo/config.toml" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/.cargo/config.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/osdev.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/osdev.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.lldbinit" beforeDir="false" afterPath="$PROJECT_DIR$/.lldbinit" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cargo.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/src/arch/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/src/arch/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/src/arch/x86_64/acpi.rs" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/src/arch/x86_64/acpi.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/src/arch/x86_64/apic.rs" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/src/arch/x86_64/apic.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/src/arch/x86_64/gdt.rs" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/src/arch/x86_64/gdt.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/src/drivers/framebuffer.rs" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/src/drivers/framebuffer.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/src/drivers/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/src/drivers/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/src/drivers/serial_monitor.rs" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/src/drivers/serial_monitor.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/src/lib.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/src/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/src/mem/frame_allocator.rs" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/src/mem/frame_allocator.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/src/mem/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/src/mem/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rust-toolchain.toml" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/rust-toolchain.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rustfmt.toml" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/rustfmt.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="RsBuildProfile:dev" />
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Rust File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="re2ds3Sk" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 6
+}]]></component>
+  <component name="ProjectId" id="388qPDisEStx0hh6a30EdUa2rdV" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Cargo.Run kernel.executor": "Run",
+    "Makefile Target.Run.executor": "Run",
+    "Makefile Target.Unnamed.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.rust.reset.selective.auto.import": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/home/netsbit/projects/osdev/GNUmakefile",
+    "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
+    "org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon": "",
+    "org.rust.first.attach.projects": "true",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager" selected="Makefile Target.Run">
+    <configuration name="Run kernel" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
+      <option name="buildProfileId" value="dev" />
+      <option name="command" value="run --package kernel --bin kernel" />
+      <option name="workingDirectory" value="file://$PROJECT_DIR$/kernel" />
+      <envs />
+      <option name="emulateTerminal" value="true" />
+      <option name="channel" value="DEFAULT" />
+      <option name="requiredFeatures" value="true" />
+      <option name="allFeatures" value="false" />
+      <option name="withSudo" value="false" />
+      <option name="buildTarget" value="REMOTE" />
+      <option name="backtrace" value="SHORT" />
+      <option name="isRedirectInput" value="false" />
+      <option name="redirectInputPath" value="" />
+      <method v="2">
+        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Test kernel" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
+      <option name="command" value="test --workspace" />
+      <option name="workingDirectory" value="file://$PROJECT_DIR$/kernel" />
+      <envs />
+      <option name="emulateTerminal" value="true" />
+      <option name="channel" value="DEFAULT" />
+      <option name="requiredFeatures" value="true" />
+      <option name="allFeatures" value="false" />
+      <option name="withSudo" value="false" />
+      <option name="buildTarget" value="REMOTE" />
+      <option name="backtrace" value="SHORT" />
+      <option name="isRedirectInput" value="false" />
+      <option name="redirectInputPath" value="" />
+      <method v="2">
+        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Run" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile">
+      <makefile filename="$PROJECT_DIR$/GNUmakefile" target="run" workingDirectory="" arguments="">
+        <envs />
+      </makefile>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Cargo.Run kernel" />
+      <item itemvalue="Cargo.Test kernel" />
+      <item itemvalue="Makefile Target.Run" />
+    </list>
+  </component>
+  <component name="RustProjectSettings">
+    <option name="toolchainHomeDirectory" value="/usr/bin" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="735d4890-2f57-4464-961d-63b0145c7518" name="Changes" comment="" />
+      <created>1751556103696</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1751556103696</updated>
+      <workItem from="1751556104771" duration="1223000" />
+      <workItem from="1768191521054" duration="16477000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
+  </component>
+</project>

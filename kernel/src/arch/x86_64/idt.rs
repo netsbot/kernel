@@ -4,8 +4,10 @@ use x86_64::{
     structures::idt::{InterruptDescriptorTable, InterruptStackFrame, PageFaultErrorCode},
 };
 
-use crate::{arch::gdt, hlt_loop, drivers, println};
-use crate::arch::x86_64::apic;
+use crate::{
+    arch::{gdt, x86_64::apic},
+    drivers, hlt_loop, println,
+};
 
 pub static IDT: Once<InterruptDescriptorTable> = Once::new();
 

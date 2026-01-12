@@ -1,0 +1,11 @@
+/home/netsbit/projects/osdev/kernel/target/debug/deps/x2apic-79a396eebb002df7.d: /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x2apic-0.5.0/src/lib.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x2apic-0.5.0/src/ioapic/mod.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x2apic-0.5.0/src/ioapic/ioapic_regs.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x2apic-0.5.0/src/ioapic/irq_entry.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x2apic-0.5.0/src/lapic/mod.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x2apic-0.5.0/src/lapic/builder.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x2apic-0.5.0/src/lapic/lapic_msr.rs
+
+/home/netsbit/projects/osdev/kernel/target/debug/deps/libx2apic-79a396eebb002df7.rmeta: /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x2apic-0.5.0/src/lib.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x2apic-0.5.0/src/ioapic/mod.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x2apic-0.5.0/src/ioapic/ioapic_regs.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x2apic-0.5.0/src/ioapic/irq_entry.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x2apic-0.5.0/src/lapic/mod.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x2apic-0.5.0/src/lapic/builder.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x2apic-0.5.0/src/lapic/lapic_msr.rs
+
+/home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x2apic-0.5.0/src/lib.rs:
+/home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x2apic-0.5.0/src/ioapic/mod.rs:
+/home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x2apic-0.5.0/src/ioapic/ioapic_regs.rs:
+/home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x2apic-0.5.0/src/ioapic/irq_entry.rs:
+/home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x2apic-0.5.0/src/lapic/mod.rs:
+/home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x2apic-0.5.0/src/lapic/builder.rs:
+/home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x2apic-0.5.0/src/lapic/lapic_msr.rs:

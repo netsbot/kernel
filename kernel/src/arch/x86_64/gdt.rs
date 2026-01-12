@@ -1,4 +1,5 @@
 use core::arch::asm;
+
 use spin::Once;
 use x86_64::{
     VirtAddr,
@@ -6,13 +7,12 @@ use x86_64::{
         segmentation::{CS, Segment},
         tables::load_tss,
     },
+    registers::segmentation::{DS, SS},
     structures::{
         gdt::{Descriptor, GlobalDescriptorTable},
         tss::TaskStateSegment,
     },
 };
-use x86_64::registers::segmentation::DS;
-use crate::println;
 
 pub const DOUBLE_FAULT_IST_INDEX: u16 = 0;
 
@@ -37,8 +37,6 @@ fn init_tss() {
         );
     }
 
-    println!("{rsp:#}");
-
     tss.privilege_stack_table[0] = VirtAddr::new(rsp);
 
     TSS.call_once(|| tss);
@@ -55,8 +53,6 @@ pub fn init() {
     let user_code_selector = gdt.append(Descriptor::user_code_segment());
     let user_data_selector = gdt.append(Descriptor::user_data_segment());
 
-    println!("{}, {}", user_code_selector.0, user_data_selector.0);
-
     let tss_selector = gdt.append(Descriptor::tss_segment(
         TSS.get().expect("tss not initialized"),
     ));
@@ -67,6 +63,7 @@ pub fn init() {
     unsafe {
         CS::set_reg(code_selector);
         DS::set_reg(data_selector);
+        SS::set_reg(data_selector);
         load_tss(tss_selector);
     }
 }

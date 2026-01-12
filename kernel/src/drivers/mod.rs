@@ -1,16 +1,17 @@
 use core::fmt;
-use bootloader_api::info::{FrameBuffer, Optional};
-use crate::SERIAL_MONITOR_PORT;
-use crate::drivers::keyboard::print_keypresses;
-use crate::tasks::executor::{Task, ASYNC_EXECUTOR};
 
-mod framebuffer;
-mod serial_monitor;
+use crate::{
+    drivers::keyboard::print_keypresses,
+    tasks::executor::{ASYNC_EXECUTOR, Task},
+};
+
+pub mod framebuffer;
 pub(crate) mod keyboard;
+mod serial_monitor;
 
-pub fn init_stdout(framebuffer: &'static mut Optional<FrameBuffer>) {
-    framebuffer::init(framebuffer.as_mut().unwrap());
-    serial_monitor::init(SERIAL_MONITOR_PORT);
+pub fn init_stdout() {
+    framebuffer::init();
+    serial_monitor::init();
 }
 
 pub fn init() {

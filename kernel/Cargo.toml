@@ -8,9 +8,15 @@ name = "kernel"
 bench = false
 test = false
 
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+
 [dependencies]
+limine = "0.5"
 x86_64 = "0.15"
-bootloader_api = "0.11.13"
 noto-sans-mono-bitmap = { version = "0.3", features = ["size_20", "unicode-specials"] }
 spin = "0.10.0"
 acpi = "6.0.1"

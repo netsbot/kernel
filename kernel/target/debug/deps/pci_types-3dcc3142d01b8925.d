@@ -1,0 +1,10 @@
+/home/netsbit/projects/osdev/kernel/target/debug/deps/pci_types-3dcc3142d01b8925.d: /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pci_types-0.10.0/src/lib.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pci_types-0.10.0/src/capability/mod.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pci_types-0.10.0/src/capability/msi.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pci_types-0.10.0/src/capability/msix.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pci_types-0.10.0/src/device_type.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pci_types-0.10.0/src/register.rs
+
+/home/netsbit/projects/osdev/kernel/target/debug/deps/libpci_types-3dcc3142d01b8925.rmeta: /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pci_types-0.10.0/src/lib.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pci_types-0.10.0/src/capability/mod.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pci_types-0.10.0/src/capability/msi.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pci_types-0.10.0/src/capability/msix.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pci_types-0.10.0/src/device_type.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pci_types-0.10.0/src/register.rs
+
+/home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pci_types-0.10.0/src/lib.rs:
+/home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pci_types-0.10.0/src/capability/mod.rs:
+/home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pci_types-0.10.0/src/capability/msi.rs:
+/home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pci_types-0.10.0/src/capability/msix.rs:
+/home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pci_types-0.10.0/src/device_type.rs:
+/home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pci_types-0.10.0/src/register.rs:

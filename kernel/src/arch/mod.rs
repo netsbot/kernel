@@ -2,25 +2,27 @@
 pub mod x86_64;
 
 use ::acpi::platform::InterruptModel;
-use bootloader_api::BootInfo;
+use limine::request::RsdpRequest;
 #[cfg(target_arch = "x86_64")]
 pub use x86_64::*;
 
+#[used]
+#[unsafe(link_section = ".requests")]
+static RSDP_REQUEST: RsdpRequest = RsdpRequest::new();
 
-pub fn init(rsdp_addr: bootloader_api::info::Optional<u64>) {
+pub fn init() {
     gdt::init();
     idt::init();
 
-    unsafe {
-        acpi::init(
-            rsdp_addr
-                .into_option()
-                .expect("missing rsdp addr"),
-        );
+    let rsdp_addr = RSDP_REQUEST
+        .get_response()
+        .expect("missing rsdp addr")
+        .address();
 
-        if let InterruptModel::Apic(apic) =
-            &acpi::ACPI_PLATFORM.get_unchecked().interrupt_model
-        {
+    unsafe {
+        acpi::init(rsdp_addr);
+
+        if let InterruptModel::Apic(apic) = &acpi::ACPI_PLATFORM.get_unchecked().interrupt_model {
             apic::init(apic)
         } else {
             panic!("no xapic interrupt controller found")

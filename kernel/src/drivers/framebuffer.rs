@@ -1,19 +1,32 @@
-use core::{fmt, ptr};
+use core::{fmt, slice};
 
-use bootloader_api::info::{FrameBuffer, FrameBufferInfo, PixelFormat};
 use font_constants::BACKUP_CHAR;
+use limine::{framebuffer::Framebuffer, request::FramebufferRequest};
 use noto_sans_mono_bitmap::{
     FontWeight, RasterHeight, RasterizedChar, get_raster, get_raster_width,
 };
 use spin::{Mutex, Once};
 
+use crate::common::color::Color;
+
+#[used]
+#[unsafe(link_section = ".requests")]
+static FRAMEBUFFER_REQUEST: FramebufferRequest = FramebufferRequest::new();
+
 pub static WRITER: Once<Mutex<FrameBufferWriter>> = Once::new();
 
 /// Initializes global writer instance
-pub fn init(info: &'static mut FrameBuffer) {
-    WRITER.call_once(|| Mutex::new(FrameBufferWriter::new(info)));
+pub fn init() {
+    WRITER.call_once(|| {
+        let fb = FRAMEBUFFER_REQUEST
+            .get_response()
+            .unwrap()
+            .framebuffers()
+            .next()
+            .unwrap();
+        Mutex::new(FrameBufferWriter::new(fb))
+    });
 }
-
 /// Additional vertical space between lines
 const LINE_SPACING: usize = 2;
 /// Additional horizontal space between characters.
@@ -52,26 +65,31 @@ fn get_char_raster(c: char) -> RasterizedChar {
     get(c).unwrap_or_else(|| get(BACKUP_CHAR).expect("Should get raster of backup char."))
 }
 
-/// Allows logging text to a pixel-based framebuffer.
-#[derive(Debug)]
+/// Allows logging text to a pixel-based framebuffer. This is the only framebuffer for the program.
 pub struct FrameBufferWriter {
     framebuffer: &'static mut [u8],
-    info: FrameBufferInfo,
+    info: Framebuffer<'static>,
     x_pos: usize,
     y_pos: usize,
 }
 
 impl FrameBufferWriter {
     /// Creates a new logger that uses the given framebuffer.
-    pub fn new(framebuffer: &'static mut FrameBuffer) -> Self {
-        let mut logger = Self {
-            info: framebuffer.info().clone(),
-            framebuffer: framebuffer.buffer_mut(),
+    pub fn new(framebuffer: Framebuffer<'static>) -> Self {
+        let info = framebuffer;
+
+        let mut writer = Self {
+            framebuffer: unsafe {
+                slice::from_raw_parts_mut(info.addr(), (info.height() * info.pitch()) as usize)
+            },
+            info,
             x_pos: 0,
             y_pos: 0,
         };
-        logger.clear();
-        logger
+
+        writer.clear();
+
+        writer
     }
 
     fn newline(&mut self) {
@@ -91,11 +109,11 @@ impl FrameBufferWriter {
     }
 
     fn width(&self) -> usize {
-        self.info.width
+        self.info.width() as usize
     }
 
     fn height(&self) -> usize {
-        self.info.height
+        self.info.height() as usize
     }
 
     /// Writes a single char to the framebuffer. Takes care of special control characters, such as
@@ -131,23 +149,12 @@ impl FrameBufferWriter {
     }
 
     fn write_pixel(&mut self, x: usize, y: usize, intensity: u8) {
-        let pixel_offset = y * self.info.stride + x;
-        let color = match self.info.pixel_format {
-            PixelFormat::Rgb => [intensity, intensity, intensity, 0],
-            PixelFormat::Bgr => [intensity, intensity, intensity, 0],
-            PixelFormat::U8 => [if intensity > 200 { 0xf } else { 0 }, 0, 0, 0],
-            other => {
-                // set a supported (but invalid) pixel format before panicking to avoid a double
-                // panic; it might not be readable though
-                self.info.pixel_format = PixelFormat::Rgb;
-                panic!("pixel format {:?} not supported in logger", other)
-            }
+        let pixel_offset = y * self.info.pitch() as usize + x * 4;
+        let color = match Color::Rgb(intensity, intensity, intensity) {
+            Color::Rgb(r, g, b) => [r, g, b, 0],
         };
-        let bytes_per_pixel = self.info.bytes_per_pixel;
-        let byte_offset = pixel_offset * bytes_per_pixel;
-        self.framebuffer[byte_offset..(byte_offset + bytes_per_pixel)]
-            .copy_from_slice(&color[..bytes_per_pixel]);
-        let _ = unsafe { ptr::read_volatile(&self.framebuffer[byte_offset]) };
+
+        self.framebuffer[pixel_offset..pixel_offset + 4].copy_from_slice(&color);
     }
 }
 

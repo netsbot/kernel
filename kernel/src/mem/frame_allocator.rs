@@ -1,17 +1,30 @@
-use bootloader_api::info::{MemoryRegionKind::Usable, MemoryRegions};
+use limine::{
+    memory_map::{Entry, EntryType},
+    request::MemoryMapRequest,
+};
 use spin::{Mutex, Once};
 use x86_64::{
     PhysAddr,
     structures::paging::{FrameAllocator, FrameDeallocator, PhysFrame, Size4KiB},
 };
 
+#[used]
+#[unsafe(link_section = ".requests")]
+static MEMORY_MAP_REQUEST: MemoryMapRequest = MemoryMapRequest::new();
+
 pub static FRAME_ALLOCATOR: Once<Mutex<KernelFrameAllocator>> = Once::new();
 
 /// # Safety
 ///
 /// The caller must ensure that all the Usable regions in memory_map is unused
-pub unsafe fn init_frame_allocator(memory_map: &'static MemoryRegions) {
-    FRAME_ALLOCATOR.call_once(|| unsafe { Mutex::new(KernelFrameAllocator::new(memory_map)) });
+pub unsafe fn init_frame_allocator() {
+    FRAME_ALLOCATOR.call_once(|| unsafe {
+        let memory_map = MEMORY_MAP_REQUEST
+            .get_response()
+            .expect("missing memory map")
+            .entries();
+        Mutex::new(KernelFrameAllocator::new(memory_map))
+    });
 }
 
 pub struct KernelFrameAllocator {
@@ -25,16 +38,17 @@ impl KernelFrameAllocator {
     /// # Safety
     ///
     /// The caller must ensure that all the Usable regions in memory_map is unused
-    pub unsafe fn new(memory_map: &'static MemoryRegions) -> Self {
-        let total_frames = memory_map.iter().last().unwrap().end / 4096;
+    pub unsafe fn new(memory_map: &[&Entry]) -> Self {
+        let last_region = memory_map.iter().last().expect("no memory region");
+        let total_frames = (last_region.base + last_region.length) / 4096;
         let bitmap_size = total_frames.div_ceil(8);
 
         let bitmap_memory_region = memory_map
             .iter()
-            .find(|r| r.kind == Usable && (r.end - r.start) >= bitmap_size)
+            .find(|r| r.entry_type == EntryType::USABLE && r.length >= bitmap_size)
             .expect("could not find a memory region large enough for the bitmap");
 
-        let bitmap_start_addr = bitmap_memory_region.start;
+        let bitmap_start_addr = bitmap_memory_region.base;
 
         let bitmap_slice = unsafe {
             core::slice::from_raw_parts_mut(
@@ -54,8 +68,8 @@ impl KernelFrameAllocator {
 
         memory_map
             .iter()
-            .filter(|r| r.kind == Usable)
-            .for_each(|r| allocator.mark_range_as_free(r.start, r.end));
+            .filter(|r| r.entry_type == EntryType::USABLE)
+            .for_each(|r| allocator.mark_range_as_free(r.base, r.base + r.length));
 
         // mark the bitmap memory as used
         allocator.mark_range_as_used(bitmap_start_addr, bitmap_start_addr + bitmap_size);

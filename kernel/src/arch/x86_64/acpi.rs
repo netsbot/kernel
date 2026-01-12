@@ -4,18 +4,21 @@ use acpi::{
     AcpiTables, Handle, Handler, PciAddress, PhysicalMapping, aml::AmlError, platform::AcpiPlatform,
 };
 use spin::Once;
-use x86_64::PhysAddr;
+use x86_64::{
+    PhysAddr,
+    structures::paging::{PageTableFlags, Size4KiB},
+};
 
-use crate::mem;
+use crate::{map_page, mem};
 
 pub static ACPI_PLATFORM: Once<AcpiPlatform<AcpiHandler>> = Once::new();
 
 /// # Safety
 ///
 /// The caller must ensure that the rsdp_addr provided is valid
-pub unsafe fn init(rsdp_addr: u64) {
-    let acpi_data = unsafe { AcpiTables::from_rsdp(AcpiHandler, rsdp_addr as usize) }
-        .expect("invalid rsdp _address");
+pub unsafe fn init(rsdp_addr: usize) {
+    let acpi_data =
+        unsafe { AcpiTables::from_rsdp(AcpiHandler, rsdp_addr) }.expect("invalid rsdp _address");
 
     ACPI_PLATFORM.call_once(|| {
         AcpiPlatform::new(acpi_data, AcpiHandler).expect("platform provided invalid acpi data")
@@ -35,6 +38,16 @@ impl Handler for AcpiHandler {
 
         let phys_addr = PhysAddr::new(physical_address as u64);
         let virt_addr = mem::phys_to_virt(phys_addr);
+
+        map_page!(
+            phys_addr,
+            virt_addr,
+            Size4KiB,
+            PageTableFlags::PRESENT
+                | PageTableFlags::WRITABLE
+                | PageTableFlags::NO_CACHE
+                | PageTableFlags::WRITE_THROUGH
+        );
 
         PhysicalMapping {
             physical_start: physical_address,

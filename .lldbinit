@@ -1,4 +1,4 @@
-target create /home/netsbit/projects/osdev/target/x86_64-unknown-none/debug/deps/artifact/kernel-8d43ee13da0053e8/bin/kernel-8d43ee13da0053e8
-target modules load --file /home/netsbit/projects/osdev/target/x86_64-unknown-none/debug/deps/artifact/kernel-8d43ee13da0053e8/bin/kernel-8d43ee13da0053e8 --slide 0x10000000000
+target create kernel/kernel
+target modules load --file kernel/kernel --slide 0xffffffff80000000
 b kernel_start
 gdb-remote localhost:1234

@@ -4,9 +4,13 @@ use x2apic::{
     ioapic::{IoApic, IrqFlags, IrqMode, RedirectionTableEntry},
     lapic::{LocalApic, LocalApicBuilder},
 };
-use x86_64::{PhysAddr, VirtAddr, instructions::port::Port};
+use x86_64::{
+    PhysAddr, VirtAddr,
+    instructions::port::Port,
+    structures::paging::{PageTableFlags, Size4KiB},
+};
 
-use crate::{arch::idt::InterruptIndex, mem::phys_to_virt};
+use crate::{arch::idt::InterruptIndex, map_page, mem::phys_to_virt, println};
 
 static LAPIC_BASE_ADDR: Once<u64> = Once::new();
 
@@ -16,14 +20,38 @@ static LAPIC_BASE_ADDR: Once<u64> = Once::new();
 pub unsafe fn init(apic: &Apic) {
     disable_8259_pics();
 
-    let lapic = init_lapic(phys_to_virt(PhysAddr::new(apic.local_apic_address)));
+    let lapic_phys_addr = PhysAddr::new(apic.local_apic_address);
+    let lapic_virt_addr = phys_to_virt(lapic_phys_addr);
 
-    let first_ioapic_addr = apic.io_apics.first().expect("no ioapic found").address;
+    LAPIC_BASE_ADDR.call_once(|| lapic_virt_addr.as_u64());
 
-    init_ioapic(
-        phys_to_virt(PhysAddr::new(first_ioapic_addr as u64)),
-        &lapic,
+    map_page!(
+        lapic_phys_addr,
+        lapic_virt_addr,
+        Size4KiB,
+        PageTableFlags::PRESENT
+            | PageTableFlags::WRITABLE
+            | PageTableFlags::NO_CACHE
+            | PageTableFlags::WRITE_THROUGH
     );
+
+    let lapic = init_lapic(lapic_virt_addr);
+
+    let first_ioapic_phys_addr =
+        PhysAddr::new(apic.io_apics.first().expect("no ioapic found").address as u64);
+    let first_ioapic_virt_addr = phys_to_virt(first_ioapic_phys_addr);
+
+    map_page!(
+        first_ioapic_phys_addr,
+        first_ioapic_virt_addr,
+        Size4KiB,
+        PageTableFlags::PRESENT
+            | PageTableFlags::WRITABLE
+            | PageTableFlags::NO_CACHE
+            | PageTableFlags::WRITE_THROUGH
+    );
+
+    init_ioapic(first_ioapic_virt_addr, &lapic);
 }
 
 fn init_ioapic(ioapic_base_addr: VirtAddr, lapic: &LocalApic) {
@@ -31,16 +59,16 @@ fn init_ioapic(ioapic_base_addr: VirtAddr, lapic: &LocalApic) {
 
     // enables all entries
     // for i in 32..(255 - 32) {
-        let mut entry = RedirectionTableEntry::default();
-        entry.set_mode(IrqMode::Fixed);
-        entry.set_flags(IrqFlags::LEVEL_TRIGGERED | IrqFlags::LOW_ACTIVE);
-        entry.set_dest(unsafe { lapic.id() } as u8);
-        entry.set_vector(0x21);
+    let mut entry = RedirectionTableEntry::default();
+    entry.set_mode(IrqMode::Fixed);
+    entry.set_flags(IrqFlags::LEVEL_TRIGGERED | IrqFlags::LOW_ACTIVE);
+    entry.set_dest(unsafe { lapic.id() } as u8);
+    entry.set_vector(0x21);
 
-        unsafe {
-            ioapic.set_table_entry(0x1, entry);
-            ioapic.enable_irq(0x1);
-        }
+    unsafe {
+        ioapic.set_table_entry(0x1, entry);
+        ioapic.enable_irq(0x1);
+    }
     // }
 }
 

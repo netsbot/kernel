@@ -1,0 +1,13 @@
+/home/netsbit/projects/osdev/kernel/target/debug/deps/talc-62bf53c3bd407f25.d: /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/talc-4.4.3/src/lib.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/talc-4.4.3/src/oom_handler.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/talc-4.4.3/src/ptr_utils.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/talc-4.4.3/src/span.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/talc-4.4.3/src/talc.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/talc-4.4.3/src/talc/llist.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/talc-4.4.3/src/talc/tag.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/talc-4.4.3/src/locking.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/talc-4.4.3/src/talck.rs
+
+/home/netsbit/projects/osdev/kernel/target/debug/deps/libtalc-62bf53c3bd407f25.rmeta: /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/talc-4.4.3/src/lib.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/talc-4.4.3/src/oom_handler.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/talc-4.4.3/src/ptr_utils.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/talc-4.4.3/src/span.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/talc-4.4.3/src/talc.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/talc-4.4.3/src/talc/llist.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/talc-4.4.3/src/talc/tag.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/talc-4.4.3/src/locking.rs /home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/talc-4.4.3/src/talck.rs
+
+/home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/talc-4.4.3/src/lib.rs:
+/home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/talc-4.4.3/src/oom_handler.rs:
+/home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/talc-4.4.3/src/ptr_utils.rs:
+/home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/talc-4.4.3/src/span.rs:
+/home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/talc-4.4.3/src/talc.rs:
+/home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/talc-4.4.3/src/talc/llist.rs:
+/home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/talc-4.4.3/src/talc/tag.rs:
+/home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/talc-4.4.3/src/locking.rs:
+/home/netsbit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/talc-4.4.3/src/talck.rs:

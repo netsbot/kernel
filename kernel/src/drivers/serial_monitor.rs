@@ -5,8 +5,10 @@ use x86_64::instructions::port::Port;
 
 pub static WRITER: Once<Mutex<SerialMonitorWriter>> = Once::new();
 
-pub fn init(port: u16) {
-    WRITER.call_once(|| Mutex::new(SerialMonitorWriter::new(port)));
+pub const SERIAL_MONITOR_PORT: u16 = 0x3F8;
+
+pub fn init() {
+    WRITER.call_once(|| Mutex::new(SerialMonitorWriter::new(SERIAL_MONITOR_PORT)));
 }
 
 #[derive(Debug)]

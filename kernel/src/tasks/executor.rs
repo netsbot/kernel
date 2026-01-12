@@ -68,7 +68,6 @@ impl TaskExecutor {
         }
     }
 
-
     // TODO: Make spawning not require mut self
     pub fn spawn(&mut self, task: Task) {
         static NEXT_TASK_ID: AtomicU8 = AtomicU8::new(0);
